@@ -13,6 +13,11 @@ export default function Home() {
   const [activeMenu, setActiveMenu] = useState("Projects");
   const [activeTopNav, setActiveTopNav] = useState("AI Director");
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showProfileSettings, setShowProfileSettings] = useState(false);
+  const [userName, setUserName] = useState("Creator");
+  const [userEmail, setUserEmail] = useState("studio@cineai.local");
+  const [tempName, setTempName] = useState("Creator");
+  const [tempEmail, setTempEmail] = useState("studio@cineai.local");
 
   const handleSend = () => {
     if (!prompt.trim()) return;
@@ -96,8 +101,8 @@ export default function Home() {
           >
             <div className="w-10 h-10 rounded-full bg-slate-200"></div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-slate-800 truncate">Creator</p>
-              <p className="text-xs text-slate-500 truncate">studio@cineai.local</p>
+              <p className="text-sm font-semibold text-slate-800 truncate">{userName}</p>
+              <p className="text-xs text-slate-500 truncate">{userEmail}</p>
             </div>
             <div className={`text-slate-400 transition-transform ${showProfileMenu ? 'rotate-180' : ''}`}>⌄</div>
           </div>
@@ -105,8 +110,8 @@ export default function Home() {
           {showProfileMenu && (
             <div className="absolute bottom-full left-4 right-4 mb-2 bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden z-20">
               <div className="p-2">
-                <button className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-lg transition-colors">Profile Settings</button>
-                <button className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-lg transition-colors">Sign Out</button>
+                <button onClick={() => { setShowProfileMenu(false); setShowProfileSettings(true); setTempName(userName); setTempEmail(userEmail); }} className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-lg transition-colors">Profile Settings</button>
+                <button onClick={() => setShowProfileMenu(false)} className="w-full text-left px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 rounded-lg transition-colors">Sign Out</button>
               </div>
             </div>
           )}
@@ -230,6 +235,55 @@ export default function Home() {
           )}
         </div>
       </main>
+      {/* Profile Settings Modal */}
+      {showProfileSettings && (
+        <div className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-slate-100">
+            <h2 className="text-2xl font-bold text-slate-800 mb-6">Profile Settings</h2>
+            
+            <div className="space-y-4 mb-8">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Name</label>
+                <input 
+                  type="text" 
+                  value={tempName}
+                  onChange={(e) => setTempName(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all text-slate-700"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Email</label>
+                <input 
+                  type="email" 
+                  value={tempEmail}
+                  onChange={(e) => setTempEmail(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all text-slate-700"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 justify-end">
+              <button 
+                onClick={() => setShowProfileSettings(false)}
+                className="px-6 py-2.5 rounded-xl font-medium text-slate-600 hover:bg-slate-100 transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={() => {
+                  setUserName(tempName);
+                  setUserEmail(tempEmail);
+                  setShowProfileSettings(false);
+                }}
+                className="px-6 py-2.5 rounded-xl font-medium bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm shadow-emerald-200 transition-colors"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
