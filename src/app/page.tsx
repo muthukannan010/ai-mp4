@@ -19,24 +19,51 @@ export default function Home() {
   const [tempName, setTempName] = useState("Creator");
   const [tempEmail, setTempEmail] = useState("studio@cineai.local");
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!prompt.trim()) return;
     
     // Add user message
-    const newMessages: Message[] = [...messages, { role: 'user', content: prompt }];
+    const userPrompt = prompt;
+    const newMessages: Message[] = [...messages, { role: 'user', content: userPrompt }];
     setMessages(newMessages);
     setPrompt("");
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      const response = await fetch("http://localhost:8000/api/v1/chat/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          project_id: "default-project",
+          message: userPrompt,
+          task: "chat",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      
       setMessages((prev) => [
         ...prev,
         { 
           role: 'ai', 
-          content: "I'll help you create that. Let me generate a storyboard and some characters for your idea." 
+          content: data.result.reply || JSON.stringify(data.result)
         }
       ]);
-    }, 1000);
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      setMessages((prev) => [
+        ...prev,
+        { 
+          role: 'ai', 
+          content: "Sorry, I couldn't connect to the AI server. Is the FastAPI backend running?" 
+        }
+      ]);
+    }
   };
 
   const handleQuickAction = (text: string) => {
