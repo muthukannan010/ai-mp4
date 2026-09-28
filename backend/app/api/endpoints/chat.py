@@ -8,8 +8,12 @@ sys.path.append(project_root)
 
 from ai.app.schemas.chat import ChatRequestSchema, ChatResponseSchema
 from ai.app.models.gemini_provider import GeminiProvider
+from dotenv import load_dotenv
 
 router = APIRouter()
+
+# Load environment variables from .env
+load_dotenv()
 
 # Initialize the Gemini provider (Assuming GEMINI_API_KEY is in environment)
 try:
