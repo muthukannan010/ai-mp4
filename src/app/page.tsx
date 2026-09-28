@@ -216,6 +216,8 @@ export default function Home() {
                         </button>
                         <input 
                           type="text" 
+                          id="chat-prompt"
+                          name="chat-prompt"
                           value={prompt}
                           onChange={(e) => setPrompt(e.target.value)}
                           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
@@ -273,6 +275,8 @@ export default function Home() {
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Name</label>
                 <input 
                   type="text" 
+                  id="profile-name"
+                  name="profile-name"
                   value={tempName}
                   onChange={(e) => setTempName(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all text-slate-700"
@@ -283,6 +287,8 @@ export default function Home() {
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Email</label>
                 <input 
                   type="email" 
+                  id="profile-email"
+                  name="profile-email"
                   value={tempEmail}
                   onChange={(e) => setTempEmail(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all text-slate-700"
