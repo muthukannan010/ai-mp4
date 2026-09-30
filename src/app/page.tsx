@@ -51,7 +51,7 @@ export default function Home() {
         ...prev,
         { 
           role: 'ai', 
-          content: data.result.reply || JSON.stringify(data.result)
+          content: data.result?.reply || data.error || JSON.stringify(data.result)
         }
       ]);
     } catch (error) {
